@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IOT Project - Data</title>
+
+    <!-- <meta http-equiv="refresh" content="10"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+
+    <style>
+      h1 {text-align: center;
+      background-color: #36304a;
+      color: white;
+      }
+      
+      </style>
+
+  <body>
+
+    <h1>River Pollution Monitoring - DataBase</h1>
+    <div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100 ver1 m-b-110">
+					<table id="ex-table">
+
+						<thead id="tr">
+              <th>Time</th>
+							<th>Sensor</th>
+							<th>Temperature</th>
+							<th>pH</th>
+							<th>TDS</th>
+							<th>Turbidity</th>
+              <th>Humidity(%)</th>
+            </thead>
+
+					</table>
+
+          <br>
+
+
+          
+					
+				</div>
+			</div>
+      
+		</div>
+
+    
+	</div>
+
+  <!-- <div>
+    <button type="button">Click Here</button>
+		
+  </div> -->
+
+    <script>
+      var config = {
+        //Enter Firebase config
+        apiKey: "",
+        authDomain: "",
+	    databaseURL: "",
+	    projectId: "",
+	    storageBucket: "",
+	    messagingSenderId: "",
+	    appId: ""
+      };
+      firebase.initializeApp(config);
+      var database = firebase.database().ref().child('Sensors');
+      database.on('value', function(snapshot){
+          if(snapshot.exists()){
+              var content = '';
+                var senNo = 0;
+              snapshot.forEach(function(data){
+                  var temp = data.val().temp;
+                  var ph = data.val().ph;
+                  var turbi = data.val().turbi;
+                  var tds = data.val().tds;
+                  var humi = data.val().humi;
+                    senNo = senNo + 1;
+                    var currentdate = new Date(); 
+          var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+                  content += '<thead>';
+                    content += '<td>' + datetime + '</td>';//column2
+                    content += '<td>' + senNo + '</td>'; //column1
+                  content += '<td>' + temp + '</td>'; //column1
+                  content += '<td>' + ph + '</td>';//column2
+                  content += '<td>' + tds + '</td>';//column2
+                  content += '<td>' + turbi + '</td>';//column2
+                  content += '<td>' + humi + '</td>';//column2
+                  
+                  content += '</thead>';
+      });
+
+        $('#ex-table').append(content);
+    }
+    });
+    </script>
+  </body>
+</html>
